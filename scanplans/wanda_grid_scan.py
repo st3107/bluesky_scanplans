@@ -5,12 +5,15 @@ from xpdacq.beamtime import _configure_area_det, _nstep
 from xpdacq.tools import xpdAcqException
 from xpdacq.utils import ExceltoYaml
 import bluesky.plans as bp
+import bluesky.plan_stubs as bps
 from bluesky.simulators import summarize_plan
+import os
 
 gridScan_sample = {}
 
 
-def gridScan(dets, exp_spreadsheet_fn, *,
+def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
+             XPD_SHUTTER_CONF, *,
              crossed=False, dx=None, dy=None, wait_time=5):
     """
     Scan plan for the multi-sample grid scan.
@@ -141,10 +144,10 @@ def gridScan(dets, exp_spreadsheet_fn, *,
         x = float(md_dict['x-position'])
         y = float(md_dict['y-position'])
         expo = float(md_dict['exposure_time(s)'])
-        yield from bp.abs_set(x_motor, x, wait='A')
-        yield from bp.abs_set(y_motor, y, wait='A')
+        yield from bps.abs_set(x_motor, x, wait='A')
+        yield from bps.abs_set(y_motor, y, wait='A')
         # wait for both motors to be in place
-        yield from bp.wait('A')
+        yield from bps.wait('A')
         # setting up area_detector
         (num_frame, acq_time, computed_exposure) = _configure_area_det(expo)
         # inject md for each sample
@@ -169,7 +172,7 @@ def gridScan(dets, exp_spreadsheet_fn, *,
         # but it doesn't seem to propagate to sub-plans.
         plan = bp.subs_wrapper(plan, LiveTable(dets))
         plan = bp.finalize_wrapper(plan,
-                                   bp.abs_set(xpd_configuration['shutter'],
+                                   bps.abs_set(xpd_configuration['shutter'],
                                               XPD_SHUTTER_CONF['close'],
                                               wait=True))
         yield from plan
