@@ -108,6 +108,16 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
       Similarly, if you wish to execute the same scan plan, you would 
       have to repeat the syntax.
     """
+    def count_dets(_dets, _full_md):
+        _count_plan = bp.count(_dets, md=_full_md)
+        _count_plan = bpp.subs_wrapper(_count_plan, LiveTable(_dets))
+        _count_plan = bpp.finalize_wrapper(_count_plan,
+                                           bps.abs_set(xpd_configuration['shutter'],
+                                                       XPD_SHUTTER_CONF['close'],
+                                                       wait=True))
+        yield from bps.abs_set(xpd_configuration['shutter'], XPD_SHUTTER_CONF['open'], wait=True)
+        yield from _count_plan
+
     # read exp spreadsheet
     spreadsheet_parser = ExceltoYaml(glbl['import_dir'])
     fp = os.path.join(spreadsheet_parser.src_dir, exp_spreadsheet_fn)
@@ -139,11 +149,7 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         raise xpdAcqException("dx and dy must both be provided if crossed is set to True")
     # construct scan plan
     for md_dict in spreadsheet_parser.parsed_sa_md_list:
-        x_center = float(md_dict['x-position'])
-        y_center = float(md_dict['y-position'])
         expo = float(md_dict['exposure_time(s)'])
-        yield from bps.mv(x_motor, x_center)
-        yield from bps.mv(y_motor, y_center)
         # setting up area_detector
         yield from _configure_area_det(expo)
         expo_md = calc_expo_md(dets[0], expo)
@@ -153,10 +159,12 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         full_md.update(md_dict)
         # Manually open shutter before collecting. See the reason
         # stated below.
-        bps.abs_set(xpd_configuration['shutter'],
-                    XPD_SHUTTER_CONF['open'], wait=True)
         # main plan
-        plan = bp.count(dets, md=full_md)  # no crossed
+        x_center = float(md_dict['x-position'])
+        y_center = float(md_dict['y-position'])
+        yield from bps.mv(x_motor, x_center)
+        yield from bps.mv(y_motor, y_center)
+        yield from count_dets(dets, full_md)  # no crossed
         if crossed:
             x_traj = [-dx + x_center, x_center + dx, x_center, x_center]
             y_traj = [y_center, y_center, y_center + dy, y_center - dy]
@@ -165,16 +173,7 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
                 yield from bps.mv(y_motor, y_setpoint)
                 full_md['x-position'] = x_setpoint
                 full_md['y-position'] = y_setpoint
-                plan = bp.count(dets, md=full_md)
-        # Manually close shutter after collecting.
-        # bluesky finalizer in xrun should've taken care of this,
-        # but it doesn't seem to propagate to sub-plans.
-        plan = bpp.subs_wrapper(plan, LiveTable(dets))
-        plan = bpp.finalize_wrapper(plan,
-                                    bps.abs_set(xpd_configuration['shutter'],
-                                                XPD_SHUTTER_CONF['close'],
-                                                wait=True))
-        yield from plan
+                yield from count_dets(dets, full_md)
         # use specified sleep time -> avoid residual from the calibrant
         yield from bps.sleep(wait_time)
 
