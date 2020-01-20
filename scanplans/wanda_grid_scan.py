@@ -6,6 +6,8 @@ from xpdacq.tools import xpdAcqException
 from xpdacq.utils import ExceltoYaml
 import bluesky.plans as bp
 import bluesky.plan_stubs as bps
+import bluesky.preprocessors as bpp
+from bluesky.callbacks import LiveTable
 from bluesky.simulators import summarize_plan
 import os
 
@@ -159,7 +161,7 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         full_md.update(md_dict)
         # Manually open shutter before collecting. See the reason
         # stated below.
-        bp.abs_set(xpd_configuration['shutter'],
+        bps.abs_set(xpd_configuration['shutter'],
                    XPD_SHUTTER_CONF['open'], wait=True)
         # main plan
         plan = bp.count(dets, md=full_md) # no crossed
@@ -170,11 +172,11 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         # Manually close shutter after collecting.
         # bluesky finalizer in xrun should've taken care of this,
         # but it doesn't seem to propagate to sub-plans.
-        plan = bp.subs_wrapper(plan, LiveTable(dets))
-        plan = bp.finalize_wrapper(plan,
+        plan = bpp.subs_wrapper(plan, LiveTable(dets))
+        plan = bpp.finalize_wrapper(plan,
                                    bps.abs_set(xpd_configuration['shutter'],
                                               XPD_SHUTTER_CONF['close'],
                                               wait=True))
         yield from plan
         # use specified sleep time -> avoid residual from the calibrant
-        yield from bp.sleep(wait_time)
+        yield from bps.sleep(wait_time)
