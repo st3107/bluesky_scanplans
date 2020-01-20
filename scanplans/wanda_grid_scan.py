@@ -139,13 +139,11 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         raise xpdAcqException("dx and dy must both be provided if crossed is set to True")
     # construct scan plan
     for md_dict in spreadsheet_parser.parsed_sa_md_list:
-        x = float(md_dict['x-position'])
-        y = float(md_dict['y-position'])
+        x_center = float(md_dict['x-position'])
+        y_center = float(md_dict['y-position'])
         expo = float(md_dict['exposure_time(s)'])
-        yield from bps.abs_set(x_motor, x, wait='A')
-        yield from bps.abs_set(y_motor, y, wait='A')
-        # wait for both motors to be in place
-        yield from bps.wait('A')
+        yield from bps.mv(x_motor, x_center)
+        yield from bps.mv(y_motor, y_center)
         # setting up area_detector
         yield from _configure_area_det(expo)
         expo_md = calc_expo_md(dets[0], expo)
@@ -160,9 +158,14 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         # main plan
         plan = bp.count(dets, md=full_md)  # no crossed
         if crossed:
-            x_traj = cycler(x_motor, [x, -dx + x, x + dx, x, x])
-            y_traj = cycler(y_motor, [y, y, y, y + dy, y - dy])
-            plan = bp.scan_nd(dets, x_traj + y_traj)
+            x_traj = [-dx + x_center, x_center + dx, x_center, x_center]
+            y_traj = [y_center, y_center, y_center + dy, y_center - dy]
+            for x_setpoint, y_setpoint in zip(x_traj, y_traj):
+                yield from bps.mv(x_motor, x_setpoint)
+                yield from bps.mv(y_motor, y_setpoint)
+                full_md['x-position'] = x_setpoint
+                full_md['y-position'] = y_setpoint
+                plan = bp.count(dets, md=full_md)
         # Manually close shutter after collecting.
         # bluesky finalizer in xrun should've taken care of this,
         # but it doesn't seem to propagate to sub-plans.
