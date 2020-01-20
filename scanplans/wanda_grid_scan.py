@@ -162,21 +162,25 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         # Manually open shutter before collecting. See the reason
         # stated below.
         bps.abs_set(xpd_configuration['shutter'],
-                   XPD_SHUTTER_CONF['open'], wait=True)
+                    XPD_SHUTTER_CONF['open'], wait=True)
         # main plan
-        plan = bp.count(dets, md=full_md) # no crossed
+        plan = bp.count(dets, md=full_md)  # no crossed
         if crossed:
-            x_traj = cycler(x_motor, [x, -dx+x, x+dx, x, x])
-            y_traj = cycler(y_motor, [y,  y, y, y+dy, y-dy])
+            x_traj = cycler(x_motor, [x, -dx + x, x + dx, x, x])
+            y_traj = cycler(y_motor, [y, y, y, y + dy, y - dy])
             plan = bp.scan_nd(dets, x_traj + y_traj)
         # Manually close shutter after collecting.
         # bluesky finalizer in xrun should've taken care of this,
         # but it doesn't seem to propagate to sub-plans.
         plan = bpp.subs_wrapper(plan, LiveTable(dets))
         plan = bpp.finalize_wrapper(plan,
-                                   bps.abs_set(xpd_configuration['shutter'],
-                                              XPD_SHUTTER_CONF['close'],
-                                              wait=True))
+                                    bps.abs_set(xpd_configuration['shutter'],
+                                                XPD_SHUTTER_CONF['close'],
+                                                wait=True))
         yield from plan
         # use specified sleep time -> avoid residual from the calibrant
         yield from bps.sleep(wait_time)
+
+
+if __name__ == '__main__':
+    print(__doc__)
