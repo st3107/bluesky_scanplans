@@ -185,7 +185,6 @@ def calc_expo_md(det, exposure):
     if hasattr(det, "images_per_set"):
         # compute number of frames
         num_frame = np.ceil(exposure / acq_time)
-        yield from bps.abs_set(det.images_per_set, num_frame)
     else:
         # The dexela detector does not support `images_per_set` so we just
         # use whatever the user asks for as the thing
