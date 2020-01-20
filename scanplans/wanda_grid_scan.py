@@ -1,7 +1,7 @@
 import uuid
 import pandas as pd
 from cycler import cycler
-from xpdacq.beamtime import _configure_area_det, _nstep
+from xpdacq.beamtime import _configure_area_det
 from xpdacq.tools import xpdAcqException
 from xpdacq.utils import ExceltoYaml
 import bluesky.plans as bp
@@ -114,7 +114,9 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
     spreadsheet_parser.pd_df = pd.read_excel(fp, skiprows=[1])
     spreadsheet_parser.parse_sample_md()
     # get detectors
-    area_det, x_motor, y_motor = list(dets)[:3]
+    area_det = xpd_configuration['area_det']
+    x_motor, y_motor = list(dets)[:2]
+    dets.insert(0, area_det)
     # compute Nsteps
     _md = {'sp_time_per_frame': None,
            'sp_num_frames': None,
@@ -125,22 +127,16 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
            'sp_plan_name': 'gridScan'}
     # first validate through sa_md list
     for md_dict in spreadsheet_parser.parsed_sa_md_list:
-        try:
-            md_dict['x-position']
-            md_dict['y-position']
-            md_dict['exposure_time(s)']
-        except:
-            raise xpdAcqException("either X-position, Y-position "
-                                  "or Exposure time column in {} "
-                                  "row is missing. Please fill it "
-                                  "and rerun"
-                                  .format(md_dict['sample_name'])
-                                  )
+        if not ('x-position' in md_dict and 'y-position' in md_dict and 'exposure_time(s)' in md_dict):
+            raise xpdAcqException(
+                "either X-position, Y-position "
+                "or Exposure time column in {} "
+                "row is missing. Please fill it "
+                "and rerun".format(md_dict['sample_name'])
+            )
     # validate crossed scan
-    if crossed:
-        if not dx or not dy:
-            raise xpdAcqException("dx and dy must both be provided "
-                                  "if crossed is set to True")
+    if crossed and (not dx or not dy):
+        raise xpdAcqException("dx and dy must both be provided if crossed is set to True")
     # construct scan plan
     for md_dict in spreadsheet_parser.parsed_sa_md_list:
         x = float(md_dict['x-position'])
