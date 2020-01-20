@@ -116,7 +116,7 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
     # get detectors
     area_det = xpd_configuration['area_det']
     x_motor, y_motor = list(dets)[:2]
-    dets.insert(0, area_det)
+    dets = [area_det] + dets
     # compute Nsteps
     _md = {'sp_time_per_frame': None,
            'sp_num_frames': None,
