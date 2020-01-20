@@ -8,7 +8,7 @@ import bluesky.plans as bp
 import bluesky.plan_stubs as bps
 import bluesky.preprocessors as bpp
 from bluesky.callbacks import LiveTable
-from bluesky.simulators import summarize_plan
+import numpy as np
 import os
 
 gridScan_sample = {}
@@ -151,13 +151,11 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         # wait for both motors to be in place
         yield from bps.wait('A')
         # setting up area_detector
-        (num_frame, acq_time, computed_exposure) = _configure_area_det(expo)
+        _configure_area_det(expo)
+        expo_md = calc_expo_md(dets[0], expo)
         # inject md for each sample
         full_md = dict(_md)
-        full_md.update({'sp_time_per_frame': acq_time,
-                        'sp_num_frames': num_frame,
-                        'sp_requested_exposure': expo,
-                        'sp_computed_exposure': computed_exposure})
+        full_md.update(expo_md)
         full_md.update(md_dict)
         # Manually open shutter before collecting. See the reason
         # stated below.
@@ -180,6 +178,26 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         yield from plan
         # use specified sleep time -> avoid residual from the calibrant
         yield from bps.sleep(wait_time)
+
+
+def calc_expo_md(det, exposure):
+    acq_time = det.cam.acquire_time.get()
+    if hasattr(det, "images_per_set"):
+        # compute number of frames
+        num_frame = np.ceil(exposure / acq_time)
+        yield from bps.abs_set(det.images_per_set, num_frame)
+    else:
+        # The dexela detector does not support `images_per_set` so we just
+        # use whatever the user asks for as the thing
+        num_frame = 1
+    computed_exposure = num_frame * acq_time
+    md = {
+        'sp_time_per_frame': acq_time,
+        'sp_num_frames': num_frame,
+        'sp_requested_exposure': exposure,
+        'sp_computed_exposure': computed_exposure
+    }
+    return md
 
 
 if __name__ == '__main__':
