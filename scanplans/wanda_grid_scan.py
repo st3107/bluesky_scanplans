@@ -147,7 +147,7 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
         # wait for both motors to be in place
         yield from bps.wait('A')
         # setting up area_detector
-        _configure_area_det(expo)
+        yield from _configure_area_det(expo)
         expo_md = calc_expo_md(dets[0], expo)
         # inject md for each sample
         full_md = dict(_md)
