@@ -1,0 +1,41 @@
+Steps to run gradient heating scripts:
+Note: contents in "< >" are meant to be replaced with correct content without "< >" 
+
+
+0. Download the entire folder and unzip. There should be `gradient_heating.py`, `utils.py`, `save_server.py` and `tester.py`.
+
+1. Start the customized `save_server` (These steps might might need help from beamline staff)
+
+   a. Find the terminal where default `save_server` is running on. Stop it (ctrl + c) and it should return a terminal.
+   b. The input line of the terminal should have a prefix looks like `(2019-3-collection.xpd)`. **If not**, please ask beamline staff for the following: "activate the conda environment for analysis servers".
+   c. Type following command in *terminal* properly configured to activate the customized `save_server` for gradient heating experiment.
+      
+      >>> `python <filepath/to/save_server.py>`
+      
+
+2. In the *ipython session* (collection terminal, different from the terminal mentioned in 1.), load the gradient heating scanplan script by:
+    
+   >>> %run -i <filepath/to/gradient_heating.py>
+   >>> %run -i <filepath/to/tester.py>
+   >>> %run -i <filepath/to/utils.py>
+
+3. Create the scan plan object. Please refer to the example syntax provided in the `gradient_heating.py`
+
+4. To run calibration run, pass the argument `calib_map` as `{}` to the scanplan and execute the scan plan for collect the images of calibrant at each position with `xrun`.
+
+5. Calibrate the experimental geometry by typing `pyFAI-calib2` in the *termainal* with correct conda environment activated (please refer to 1.).
+
+6. A GUI program should pop out and you can calibrate the geometry at each position with the program. *Be sure* to save the geometry files (.poni files) to a single director (for example, `poni_dir`) with the naming scheme: `00_<extra_string>.poni` for the first position and `01_<extra_string>.poni` for the second position and so on.
+
+7. Create the mapping of calibration information and position by:
+
+   >>> calib_map = calib_map_gen(poni_dir)
+   
+   Set up a scan plan for sample with `calib_map` passed during its creation. Run the scans plan with `xrun`.
+
+
+Note: an useful example of the syntax is also listed in `tester.py`. Please change the argument `ns.motor1` and `ns.motor2` with the x- and y-motor used at beamline. 
+
+
+  
+ 
