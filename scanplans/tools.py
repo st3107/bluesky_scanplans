@@ -1,3 +1,4 @@
+"""Tools for writing the bluesky plans."""
 import numpy as np
 import bluesky.plan_stubs as bps
 
@@ -13,7 +14,7 @@ __all__ = [
     "calc_exposure",
     "shutter_step",
     "calc_delay",
-    "inner_shutter_control"
+    "inner_shutter_control",
 ]
 
 
