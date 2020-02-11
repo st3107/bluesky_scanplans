@@ -25,8 +25,9 @@ from bluesky.callbacks import LiveTable
 from bluesky.preprocessors import subs_wrapper
 from xpdacq.beamtime import _configure_area_det
 from xpdacq.xpdacq_conf import xpd_configuration
-from typing import List, Union
+from typing import List
 import uuid
+from scanplans.tools import translate_to_sample
 
 
 def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], posi_motor: object, positions: List[float],
@@ -173,42 +174,6 @@ def config_det_and_count(motors: List[object], sample_md: dict, exposure: float)
     plan = count(dets, md=_md)
     plan = subs_wrapper(plan, LiveTable([]))
     yield from plan
-
-
-def translate_to_sample(beamtime: object, sample: Union[int, List[int], dict]):
-    """Translate a sample into a list of dict
-
-    Parameters
-    ----------
-    beamtime : beamtime object
-    sample : list of int or dict-like
-        Sample metadata. If a beamtime object is linked,
-        an integer will be interpreted as the index appears in the
-        ``bt.list()`` method, corresponding metadata will be passed.
-        A customized dict can also be passed as the sample
-        metadata.
-
-    Returns
-    -------
-    sample_md : list of dict
-        The sample info loaded
-    """
-    if isinstance(sample, list):
-        sample_md = [translate_to_sample(beamtime, s) for s in sample]
-    elif isinstance(sample, int):
-        try:
-            sample_md = list(beamtime.samples.values())[sample]
-        except IndexError:
-            print(
-                "WARNING: hmm, there is no sample with index `{}`"
-                ", please do `bt.list()` to check if it exists yet".format(
-                    sample
-                )
-            )
-            return
-    else:
-        raise TypeError(f"The type of sample is {type(sample)}. Expect list, int or dict-like.")
-    return sample_md
 
 
 if __name__ == "__main__":
