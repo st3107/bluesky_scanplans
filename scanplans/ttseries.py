@@ -72,7 +72,7 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
     # make the count plan
     real_delay = delay_md.get('sp_computed_delay')
     plan = count([area_det, temp_controller], num, real_delay, md=md)
-    plan = subs_wrapper(plan, LiveTable([]))
+    plan = subs_wrapper(plan, LiveTable([temp_controller]))
     # open and close the shutter for each count
     if auto_shutter:
         plan = plan_mutator(plan, inner_shutter_control)
