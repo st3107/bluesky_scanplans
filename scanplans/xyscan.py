@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-def xyscan(bt, sample_index, plan_index, auto_shutter=False):
+def xyscan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
     """
     Yield messages to count the predefined measurement plan on the a list of samples on a sample rack. It requires
     the following information to be added for each sample.
@@ -28,6 +28,8 @@ def xyscan(bt, sample_index, plan_index, auto_shutter=False):
         A list of the sample index in the BeamTime instance.
     plan_index: List[int]
         A list of the plan index in the BeamTime instance.
+    wait_time : float
+        Waiting time before conduct plan for each sample in second.
     auto_shutter : bool
         Whether to mutate the plan with inner_shutter_control.
 
@@ -55,11 +57,10 @@ def xyscan(bt, sample_index, plan_index, auto_shutter=False):
         sample = translate_to_sample(bt, int(sample_ind))
         posx = get_from_sample(sample, "position_x")
         posy = get_from_sample(sample, "position_y")
-        wait_time = get_from_sample(sample, "wait_time")
         count_plan = translate_to_plan(bt, int(plan_ind), sample)
         if auto_shutter:
             count_plan = plan_mutator(count_plan, inner_shutter_control)
-        if posx and posy and wait_time and count_plan:
+        if posx and posy and count_plan:
             yield from checkpoint()
             yield from mv(posx_controller, float(posx))
             yield from checkpoint()
