@@ -1,5 +1,8 @@
 """A function to measure a series of samples automatically."""
 from bluesky.plan_stubs import mv, sleep, checkpoint
+from bluesky.preprocessors import plan_mutator
+
+from scanplans.tools import inner_shutter_control
 from xpdacq.beamtime import xpd_configuration, Beamtime, Sample
 from scanplans.mdgetters import *
 from typing import List
@@ -9,7 +12,7 @@ __all__ = [
 ]
 
 
-def xyscan(bt, sample_index, plan_index):
+def xyscan(bt, sample_index, plan_index, auto_shutter=False):
     """
     Yield messages to count the predefined measurement plan on the a list of samples on a sample rack. It requires
     the following information to be added for each sample.
@@ -25,6 +28,8 @@ def xyscan(bt, sample_index, plan_index):
         A list of the sample index in the BeamTime instance.
     plan_index: List[int]
         A list of the plan index in the BeamTime instance.
+    auto_shutter : bool
+        Whether to mutate the plan with inner_shutter_control.
 
     Yields
     ------
@@ -52,6 +57,8 @@ def xyscan(bt, sample_index, plan_index):
         posy = get_from_sample(sample, "position_y")
         wait_time = get_from_sample(sample, "wait_time")
         count_plan = translate_to_plan(bt, int(plan_ind), sample)
+        if auto_shutter:
+            count_plan = plan_mutator(count_plan, inner_shutter_control)
         if posx and posy and wait_time and count_plan:
             yield from checkpoint()
             yield from mv(posx_controller, float(posx))
