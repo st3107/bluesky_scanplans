@@ -14,7 +14,8 @@ __all__ = ["ttseries"]
 
 def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
     """
-    Set a target temperature. Make time series scan with area detector during the ramping and holding.
+    Set a target temperature. Make time series scan with area detector during the ramping and holding. Since abs_set
+    is used, please do not set the temperature through CSstudio when the plan is running.
 
     Parameters
     ----------
