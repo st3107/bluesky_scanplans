@@ -22,7 +22,7 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
         list of 'readable' objects. default to area detector
         linked to xpdAcq.
     temp_setpoint: float
-        A temperature set point.
+        A temperature set point. If None, do not set the temperature.
     exposure : float
         The exposure time at each reading from area detector in seconds
     delay : float
@@ -78,5 +78,8 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
         plan = plan_mutator(plan, inner_shutter_control)
     # yield messages
     yield from configure_area_det(area_det, md)
-    yield from abs_set(temp_controller, temp_setpoint, wait=False)
+    if temp_setpoint:
+        yield from abs_set(temp_controller, temp_setpoint, wait=False)
+    else:
+        pass
     yield from plan
