@@ -78,8 +78,5 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
         plan = plan_mutator(plan, inner_shutter_control)
     # yield messages
     yield from configure_area_det(area_det, md)
-    if temp_setpoint:
-        yield from abs_set(temp_controller, temp_setpoint, wait=False)
-    else:
-        pass
+    yield from abs_set(temp_controller, temp_setpoint, wait=False)
     yield from plan
