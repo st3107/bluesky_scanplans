@@ -1,5 +1,5 @@
 """A function to measure a series of samples automatically."""
-from bluesky.plan_stubs import mv, sleep, checkpoint
+from bluesky.plan_stubs import mv, sleep, checkpoint, wait
 from bluesky.preprocessors import plan_mutator
 
 from scanplans.tools import inner_shutter_control
@@ -65,6 +65,8 @@ def xyscan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
             yield from mv(posx_controller, float(posx))
             yield from checkpoint()
             yield from mv(posy_controller, float(posy))
+            yield from checkpoint()
+            yield from wait()
             yield from checkpoint()
             yield from count_plan
             yield from checkpoint()
