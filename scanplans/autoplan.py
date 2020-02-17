@@ -8,11 +8,11 @@ from scanplans.mdgetters import *
 from typing import List
 
 __all__ = [
-    "xyscan"
+    "autoplan"
 ]
 
 
-def xyscan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
+def autoplan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
     """
     Yield messages to count the predefined measurement plan on the a list of samples on a sample rack. It requires
     the following information to be added for each sample.
@@ -47,7 +47,7 @@ def xyscan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
         >>> ScanPlan(bt, ct, 30)
     Add the information of 'position_x', 'position_y' and 'wait_time' to the excel and import.
     Automatically conduct the scan plan for sample No.0 and No.1
-        >>> plan = xyscan(bt, [0, 1])
+        >>> plan = autoplan(bt, [0, 1])
         >>> xrun({}, plan)
     """
     posx_controller = xpd_configuration["posx_controller"]
