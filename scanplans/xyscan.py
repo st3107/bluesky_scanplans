@@ -68,9 +68,8 @@ def xyscan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
             print(f"INFO: Move to y: {posy}")
             yield from mv(posy_controller, float(posy))
             yield from checkpoint()
+            yield from wait()
             print(f"INFO: Wait for {wait_time} s")
             yield from sleep(float(wait_time))
-            yield from checkpoint()
-            yield from wait()
             yield from checkpoint()
             yield from count_plan
