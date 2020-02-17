@@ -84,6 +84,8 @@ class BeamtimeHelper:
         sample
             The sample index or sample name key.
         """
+        posx_controller = xpd_configuration["posx_controller"]
+        posy_controller = xpd_configuration["posy_controller"]
         sample_meta = self.get_sample_meta(sample)
         name = sample_meta.get("sample_name")
         print(f"INFO: Target sample {name}")
@@ -91,16 +93,13 @@ class BeamtimeHelper:
         pos_x = sample_meta.get(pos_x_key)
         pos_y = sample_meta.get(pos_y_key)
         if pos_x is None:
-            print(f"ERROR: No {pos_x_key} in sample {sample} -> Do nothing")
-            yield from null()
-            return
+            print(f"Warning: No {pos_x_key} in sample {sample} -> Do nothing")
+        else:
+            print(f"INFO: Move to x = {pos_x}")
+            yield from mv(posx_controller, float(pos_x))
         if pos_y is None:
-            print(f"ERROR: No {pos_y_key} in sample {sample} -> Do nothing")
-            yield from null()
-            return
-        posx_controller = xpd_configuration["posx_controller"]
-        posy_controller = xpd_configuration["posy_controller"]
-        print(f"INFO: Move to x = {pos_x}")
-        yield from mv(posx_controller, pos_x)
-        print(f"INFO: Move to y = {pos_y}")
-        yield from mv(posy_controller, pos_y)
+            print(f"Warning: No {pos_y_key} in sample {sample} -> Do nothing")
+        else:
+            print(f"INFO: Move to y = {pos_y}")
+            yield from mv(posy_controller, float(pos_y))
+        yield null()
