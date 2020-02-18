@@ -1,15 +1,18 @@
 """A function to measure a series of samples automatically."""
-from bluesky.plan_stubs import mv, sleep, checkpoint
+from bluesky.plan_stubs import mv, sleep, checkpoint, wait
+from bluesky.preprocessors import plan_mutator
+
+from scanplans.tools import inner_shutter_control
 from xpdacq.beamtime import xpd_configuration, Beamtime, Sample
 from scanplans.mdgetters import *
 from typing import List
 
 __all__ = [
-    "xyscan"
+    "autoplan"
 ]
 
 
-def xyscan(bt, sample_index, plan_index):
+def autoplan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
     """
     Yield messages to count the predefined measurement plan on the a list of samples on a sample rack. It requires
     the following information to be added for each sample.
@@ -25,6 +28,10 @@ def xyscan(bt, sample_index, plan_index):
         A list of the sample index in the BeamTime instance.
     plan_index: List[int]
         A list of the plan index in the BeamTime instance.
+    wait_time : float
+        Waiting time before conduct plan for each sample in second.
+    auto_shutter : bool
+        Whether to mutate the plan with inner_shutter_control.
 
     Yields
     ------
@@ -40,7 +47,7 @@ def xyscan(bt, sample_index, plan_index):
         >>> ScanPlan(bt, ct, 30)
     Add the information of 'position_x', 'position_y' and 'wait_time' to the excel and import.
     Automatically conduct the scan plan for sample No.0 and No.1
-        >>> plan = xyscan(bt, [0, 1])
+        >>> plan = autoplan(bt, [0, 1])
         >>> xrun({}, plan)
     """
     posx_controller = xpd_configuration["posx_controller"]
@@ -50,14 +57,19 @@ def xyscan(bt, sample_index, plan_index):
         sample = translate_to_sample(bt, int(sample_ind))
         posx = get_from_sample(sample, "position_x")
         posy = get_from_sample(sample, "position_y")
-        wait_time = get_from_sample(sample, "wait_time")
         count_plan = translate_to_plan(bt, int(plan_ind), sample)
-        if posx and posy and wait_time and count_plan:
+        if auto_shutter:
+            count_plan = plan_mutator(count_plan, inner_shutter_control)
+        if posx and posy and count_plan:
             yield from checkpoint()
+            print(f"INFO: Move to x: {posx}")
             yield from mv(posx_controller, float(posx))
             yield from checkpoint()
+            print(f"INFO: Move to y: {posy}")
             yield from mv(posy_controller, float(posy))
             yield from checkpoint()
-            yield from count_plan
-            yield from checkpoint()
+            yield from wait()
+            print(f"INFO: Wait for {wait_time} s")
             yield from sleep(float(wait_time))
+            yield from checkpoint()
+            yield from count_plan

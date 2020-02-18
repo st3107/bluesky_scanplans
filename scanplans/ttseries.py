@@ -12,9 +12,10 @@ from scanplans.tools import *
 __all__ = ["ttseries"]
 
 
-def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
+def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True, manual_set=False):
     """
-    Set a target temperature. Make time series scan with area detector during the ramping and holding.
+    Set a target temperature. Make time series scan with area detector during the ramping and holding. Since abs_set
+    is used, please do not set the temperature through CSstudio when the plan is running.
 
     Parameters
     ----------
@@ -22,14 +23,14 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
         list of 'readable' objects. default to area detector
         linked to xpdAcq.
     temp_setpoint: float
-        A temperature set point.
+        A temperature set point. If None, do not set the temperature.
     exposure : float
         The exposure time at each reading from area detector in seconds
     delay : float
         The period of time between the starting points of two consecutive readings from area detector in seconds
     num : int
         The total number of readings
-    auto_shutter: bool, optional
+    auto_shutter: bool
         Option on whether delegates shutter control to ``xpdAcq``. If True,
         following behavior will take place:
 
@@ -38,6 +39,9 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
         To make shutter stay open during ``tseries`` scan,
         pass ``False`` to this argument. See ``Notes`` below for more
         detailed information.
+    manual_set : bool
+        Option on whether to manual set the temperature set point outside the plan. If True, no temperature
+        will be set in plan.
 
     Examples
     --------
@@ -72,11 +76,12 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True):
     # make the count plan
     real_delay = delay_md.get('sp_computed_delay')
     plan = count([area_det, temp_controller], num, real_delay, md=md)
-    plan = subs_wrapper(plan, LiveTable([]))
+    plan = subs_wrapper(plan, LiveTable([temp_controller]))
     # open and close the shutter for each count
     if auto_shutter:
         plan = plan_mutator(plan, inner_shutter_control)
     # yield messages
     yield from configure_area_det(area_det, md)
-    yield from abs_set(temp_controller, temp_setpoint, wait=False)
+    if not manual_set:
+        yield from abs_set(temp_controller, temp_setpoint, wait=False)
     yield from plan
