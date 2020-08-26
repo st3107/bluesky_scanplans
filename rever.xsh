@@ -6,7 +6,6 @@ $ACTIVITIES = [
     'push_tag',
     'ghrelease',
     'pypi',
-    'conda_release'
 ]
 
 $VERSION_BUMP_PATTERNS = [
