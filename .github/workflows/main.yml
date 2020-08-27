@@ -34,11 +34,6 @@ jobs:
           source activate test
           python -m pip install .
 
-      - name: copy acqsim directory
-        run: |
-          source activate test
-          cp -r data/acqsim /home/runner/acqsim
-
       - name: run the tests and check for test coverage
         run: |
           source activate test
