@@ -1,11 +1,11 @@
 """Tools for writing the bluesky plans."""
-import numpy as np
-import bluesky.plan_stubs as bps
+from typing import Dict, Union
 
+import bluesky.plan_stubs as bps
+import numpy as np
 from xpdacq.glbl import glbl
 from xpdacq.xpdacq_conf import xpd_configuration
 from xpdconf.conf import XPD_SHUTTER_CONF
-from typing import Dict, Union
 
 __all__ = [
     "configure_area_det",
@@ -20,8 +20,8 @@ __all__ = [
 
 def configure_area_det(det, md: Dict[str, Union[int, float]]):
     """
-    Yield the message to configure the area detector with time per frame and number of frames per exposure according
-    to the required exposure time. Update the metadata.
+    Yield the message to configure the area detector with time per frame and number of frames per exposure
+    according to the required exposure time. Update the metadata.
 
     Parameters
     ----------

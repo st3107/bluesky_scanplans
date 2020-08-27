@@ -1,8 +1,9 @@
 """The functions to get metadata related to the samples and plans from the Beamtime object."""
-from bluesky.preprocessors import msg_mutator
-from xpdacq.xpdacq import _sample_injector_factory
-from xpdacq.beamtime import Beamtime, ScanPlan, Sample
 from typing import Union, List
+
+from bluesky.preprocessors import msg_mutator
+from xpdacq.beamtime import Beamtime, ScanPlan, Sample
+from xpdacq.xpdacq import _sample_injector_factory
 
 __all__ = [
     "translate_to_sample",
@@ -11,13 +12,14 @@ __all__ = [
 ]
 
 
-def translate_to_sample(beamtime, sample: Union[int, List[int], dict]):
+def translate_to_sample(beamtime: Beamtime, sample: Union[int, List[int], dict]):
     """Translate a sample into a list of dict
 
     Parameters
     ----------
     beamtime : Beamtime
         The BeamTime instance.
+
     sample : list of int or dict-like
         Sample metadata. If a beamtime object is linked,
         an integer will be interpreted as the index appears in the
@@ -97,7 +99,7 @@ def translate_to_plan(beamtime, plan, sample_md):
     return plan
 
 
-def get_from_sample(sample, key):
+def get_from_sample(sample: Sample, key):
     """
     Get the value of the key in a Sample instance. If fail to access, print out the message.
 
