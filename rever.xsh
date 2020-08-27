@@ -5,7 +5,7 @@ $ACTIVITIES = [
     'tag',
     'push_tag',
     'ghrelease',
-    'pypi',
+    'pypi'
 ]
 
 $VERSION_BUMP_PATTERNS = [
@@ -17,5 +17,5 @@ $CHANGELOG_FILENAME = 'CHANGELOG.rst'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $TAG_REMOTE = 'git@github.com:Billingegroup/bluesky_scanplans.git'
 
-$GITHUB_ORG = 'BillingeGroup'
+$GITHUB_ORG = 'Billingegroup'
 $GITHUB_REPO = 'bluesky_scanplans'

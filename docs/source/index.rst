@@ -11,5 +11,4 @@ bluesky_scanplans Documentation
 
    installation
    usage
-   release-history
    min_versions
