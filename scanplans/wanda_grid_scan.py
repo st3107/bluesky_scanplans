@@ -1,15 +1,15 @@
+import os
 import uuid
+
+import bluesky.plan_stubs as bps
+import bluesky.plans as bp
+import bluesky.preprocessors as bpp
+import numpy as np
 import pandas as pd
-from cycler import cycler
+from bluesky.callbacks import LiveTable
 from xpdacq.beamtime import _configure_area_det
 from xpdacq.tools import xpdAcqException
 from xpdacq.utils import ExceltoYaml
-import bluesky.plans as bp
-import bluesky.plan_stubs as bps
-import bluesky.preprocessors as bpp
-from bluesky.callbacks import LiveTable
-import numpy as np
-import os
 
 gridScan_sample = {}
 
@@ -92,22 +92,23 @@ def gridScan(dets, exp_spreadsheet_fn, glbl, xpd_configuration,
     df = db.get_table(hdrs)
     # visualize the dataframe
     df
-    # save the dataframe as a csv 
+    # save the dataframe as a csv
     df.to_csv('wandaHY1_spatial_scan_df.csv')
 
     Notes
     -----
-    1. ``gridScan_sample`` used in the example is in fact an empty 
+    1. ``gridScan_sample`` used in the example is in fact an empty
       dictionary (and it has been defined in this script as well).
-      Sample metadata is handled inside the plan, therefore it's 
+      Sample metadata is handled inside the plan, therefore it's
       simply an auxiliary object.
 
-    2. ``gridScan`` yields a generator so you would need to construct 
-      it every time after using it. As demonstrated in the Example, 
-      we redefine the ``grid_plan`` again after printing the summary. 
-      Similarly, if you wish to execute the same scan plan, you would 
+    2. ``gridScan`` yields a generator so you would need to construct
+      it every time after using it. As demonstrated in the Example,
+      we redefine the ``grid_plan`` again after printing the summary.
+      Similarly, if you wish to execute the same scan plan, you would
       have to repeat the syntax.
     """
+
     def count_dets(_dets, _full_md):
         _count_plan = bp.count(_dets, md=_full_md)
         _count_plan = bpp.subs_wrapper(_count_plan, LiveTable(_dets))

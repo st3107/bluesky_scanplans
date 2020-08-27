@@ -1,21 +1,21 @@
 """The function for Rohan's insitu measurement."""
 import uuid
 
-from bluesky.plans import count
-from bluesky.plan_stubs import abs_set
-from bluesky.preprocessors import subs_wrapper, plan_mutator
 from bluesky.callbacks import LiveTable
-
+from bluesky.plan_stubs import abs_set
+from bluesky.plans import count
+from bluesky.preprocessors import subs_wrapper, plan_mutator
 from xpdacq.xpdacq_conf import xpd_configuration
-from scanplans.tools import *
+
+import scanplans.tools as tl
 
 __all__ = ["ttseries"]
 
 
 def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True, manual_set=False):
     """
-    Set a target temperature. Make time series scan with area detector during the ramping and holding. Since abs_set
-    is used, please do not set the temperature through CSstudio when the plan is running.
+    Set a target temperature. Make time series scan with area detector during the ramping and holding. Since
+    abs_set is used, please do not set the temperature through CSstudio when the plan is running.
 
     Parameters
     ----------
@@ -57,7 +57,6 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True, manua
 
         >>> ScanPlan(bt, ttseries, 300, 10, 20, 10, False)
     """
-    pe1c, = dets
     area_det = xpd_configuration["area_det"]
     temp_controller = xpd_configuration["temp_controller"]
     md = {
@@ -67,11 +66,11 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True, manua
         "temp_setpoint": temp_setpoint
     }
     # calculate number of frames
-    exposure_md = calc_exposure(area_det, exposure)
+    exposure_md = tl.calc_exposure(area_det, exposure)
     md.update(exposure_md)
     # calculate the real delay and period
     computed_exposure = exposure_md.get("sp_computed_exposure")
-    delay_md = calc_delay(delay, computed_exposure, num)
+    delay_md = tl.calc_delay(delay, computed_exposure, num)
     md.update(delay_md)
     # make the count plan
     real_delay = delay_md.get('sp_computed_delay')
@@ -79,9 +78,9 @@ def ttseries(dets, temp_setpoint, exposure, delay, num, auto_shutter=True, manua
     plan = subs_wrapper(plan, LiveTable([temp_controller]))
     # open and close the shutter for each count
     if auto_shutter:
-        plan = plan_mutator(plan, inner_shutter_control)
+        plan = plan_mutator(plan, tl.inner_shutter_control)
     # yield messages
-    yield from configure_area_det(area_det, md)
+    yield from tl.configure_area_det(area_det, md)
     if not manual_set:
         yield from abs_set(temp_controller, temp_setpoint, wait=False)
     yield from plan

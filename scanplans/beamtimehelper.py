@@ -1,10 +1,11 @@
 """A class to print sample information and generate bluesky plan to target samples."""
-from xpdacq.beamtime import Beamtime, ScanPlan
-from xpdacq.xpdacq_conf import xpd_configuration
-from bluesky.plan_stubs import mv, null
-from bluesky.simulators import summarize_plan
 from pprint import pprint
 from typing import Union, Tuple, Generator
+
+from bluesky.plan_stubs import mv, null
+from bluesky.simulators import summarize_plan
+from xpdacq.beamtime import Beamtime, ScanPlan
+from xpdacq.xpdacq_conf import xpd_configuration
 
 __all__ = [
     "BeamtimeHelper"
@@ -26,6 +27,7 @@ class BeamtimeHelper:
     _pos_key
         The key for the position of samples. Default is the global variable POS_KEYS
     """
+
     def __init__(self, bt: Beamtime, pos_key: Tuple[str, str] = POS_KEYS):
         """
         Initiate the class instance.

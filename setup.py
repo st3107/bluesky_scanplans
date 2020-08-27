@@ -1,7 +1,7 @@
-from os import path
-from setuptools import setup, find_packages
 import sys
+from os import path
 
+from setuptools import setup, find_packages
 
 # NOTE: This file must remain Python 2 compatible for the foreseeable future,
 # to ensure that we error out properly for people with outdated setuptools
@@ -25,7 +25,6 @@ here = path.abspath(path.dirname(__file__))
 
 with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
-
 
 setup(
     name='scanplans',

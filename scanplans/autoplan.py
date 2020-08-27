@@ -1,18 +1,17 @@
 """A function to measure a series of samples automatically."""
 from bluesky.plan_stubs import mv, sleep, checkpoint, wait
 from bluesky.preprocessors import plan_mutator
+from xpdacq.beamtime import xpd_configuration, Beamtime
 
+import scanplans.mdgetters as mg
 from scanplans.tools import inner_shutter_control
-from xpdacq.beamtime import xpd_configuration, Beamtime, Sample
-from scanplans.mdgetters import *
-from typing import List
 
 __all__ = [
     "autoplan"
 ]
 
 
-def autoplan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
+def autoplan(bt: Beamtime, sample_index, plan_index, wait_time=30., auto_shutter=False):
     """
     Yield messages to count the predefined measurement plan on the a list of samples on a sample rack. It requires
     the following information to be added for each sample.
@@ -55,9 +54,9 @@ def autoplan(bt, sample_index, plan_index, wait_time=30., auto_shutter=False):
 
     for sample_ind, plan_ind in zip(sample_index, plan_index):
         sample = translate_to_sample(bt, int(sample_ind))
-        posx = get_from_sample(sample, "position_x")
-        posy = get_from_sample(sample, "position_y")
-        count_plan = translate_to_plan(bt, int(plan_ind), sample)
+        posx = mg.get_from_sample(sample, "position_x")
+        posy = mg.get_from_sample(sample, "position_y")
+        count_plan = mg.translate_to_plan(bt, int(plan_ind), sample)
         if auto_shutter:
             count_plan = plan_mutator(count_plan, inner_shutter_control)
         if posx and posy and count_plan:

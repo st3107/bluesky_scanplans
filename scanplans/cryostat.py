@@ -5,10 +5,11 @@ This script contains the plan for cryostat measurement. How to use it:
 
     '%run userScript/cryostat.py'
 
-(3) Instantiate a python generator as the plan. Here is an example where the beamtime object is 'bt', the temperature
-controller is 'cryostat_T', the position controller is 'ss_stage_x' and the plan is to set temperature to 295 K and 300
-K and take a single shot for two samples at each temperature. The samples are loaded at x-positions: 10 mm and 10.2 mm.
-Their corresponding index in bt is 1 and 2. The exposure time is 30 s and 60 s respectively.
+(3) Instantiate a python generator as the plan. Here is an example where the beamtime object is 'bt',
+the temperature controller is 'cryostat_T', the position controller is 'ss_stage_x' and the plan is to set
+temperature to 295 K and 300 K and take a single shot for two samples at each temperature. The samples are
+loaded at x-positions: 10 mm and 10.2 mm. Their corresponding index in bt is 1 and 2. The exposure time is 30 s
+and 60 s respectively.
 
     'plan = cryostat_plan(bt, cryostat_T, [295, 300], ss_stage_x, [10, 10.2], [1, 2], [30, 60])'
 
@@ -16,21 +17,23 @@ Their corresponding index in bt is 1 and 2. The exposure time is 30 s and 60 s r
 
     'xrun({}, plan)'
 
-    We don't need to worry about the samples information because it will be added into metadata by this plan so the
-    first positional argument of 'xrun' is given a empty dictionary.
-"""
+    We don't need to worry about the samples information because it will be added into metadata by this plan so
+    the first positional argument of 'xrun' is given a empty dictionary. """
+import uuid
+from typing import List
+
+from bluesky.callbacks import LiveTable
 from bluesky.plan_stubs import mv, abs_set, checkpoint
 from bluesky.plans import count
-from bluesky.callbacks import LiveTable
 from bluesky.preprocessors import subs_wrapper
 from xpdacq.beamtime import _configure_area_det
 from xpdacq.xpdacq_conf import xpd_configuration
-from typing import List
-import uuid
+
 from scanplans.tools import translate_to_sample
 
 
-def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], posi_motor: object, positions: List[float],
+def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], posi_motor: object,
+                  positions: List[float],
                   samples: List[int], exposures: List[float], temp_to_power: dict = None):
     """
     The scanplan of cryostat measurement.
@@ -39,21 +42,28 @@ def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], pos
     -------
         bt : beamtime object
             The beamtime object.
+
         temp_motor : motor object
             The controller of temperature.
+
         temperatures : List[float]
             A list of temperature setpoints.
+
         posi_motor : motor object
             The controller of positions.
+
         positions : List[float]
             A list of positions.
+
         samples : List[int]
             A list of index of samples in bt.
+
         exposures : List[float]
             A list of exposure time.
+
         temp_to_power : dict
-            A mapping from temperature range to power. The range is open at left and close at right. If None, default
-            setting (see function 'get_heater_range') is used. Default None.
+            A mapping from temperature range to power. The range is open at left and close at right. If None,
+            default setting (see function 'get_heater_range') is used. Default None.
 
     Yields
     -------
@@ -134,8 +144,8 @@ def get_heater_range(temperature: float, temp_to_power: dict = None):
 
 def config_det_and_count(motors: List[object], sample_md: dict, exposure: float):
     """
-    Take one reading from area detector with given exposure time and motors. Save the motor reading results in the start
-    document.
+    Take one reading from area detector with given exposure time and motors. Save the motor reading results in
+    the start document.
 
     Parameters
     ----------
