@@ -9,17 +9,17 @@ from xpdacq.xpdacq_conf import xpd_configuration
 
 from scanplans.beamtimehelper import BeamtimeHelper
 
-RE = RunEngine()
-motor0 = SynAxis(name="motor0")
-motor1 = SynAxis(name="moror1")
-xpd_configuration["posx_controller"] = motor0
-xpd_configuration["posy_controller"] = motor1
-xpd_configuration["area_det"] = None
-bt = Beamtime("Billinge", 300000, ["Billinge"])
-
 
 @pytest.mark.skip(reason="Yaml not found in CI.")
 def test_beamtimehelper():
+    RE = RunEngine()
+    motor0 = SynAxis(name="motor0")
+    motor1 = SynAxis(name="moror1")
+    xpd_configuration["posx_controller"] = motor0
+    xpd_configuration["posy_controller"] = motor1
+    xpd_configuration["area_det"] = None
+    bt = Beamtime("Billinge", 300000, ["Billinge"])
+
     sample_md = {"sample_name": "Ni", "sample_composition": {"Ni": 1}}
     Sample(bt, sample_md)
 
