@@ -2,6 +2,8 @@
 bluesky_scanplans
 =================
 
+.. image:: https://github.com/Billingegroup/bluesky_scanplans/workflows/test/badge.svg
+
 .. image:: https://badge.fury.io/py/scanplans.svg
     :target: https://badge.fury.io/py/scanplans
 
