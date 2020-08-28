@@ -14,7 +14,7 @@ with path("data", "__init__.py") as p:
 HW = hw()
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def bt() -> Beamtime:
     bt = load_beamtime(str(DATA.joinpath("acqsim/xpdUser/config_base/yml")))
     return bt
