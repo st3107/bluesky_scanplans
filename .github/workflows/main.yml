@@ -34,12 +34,6 @@ jobs:
           source activate test
           python -m pip install .
 
-      - name: generate test coverage report and upload to codecov
-        run: |
-          source activate test
-          coverage report -m
-          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_TOKEN }}
-
       - name: check code style
         run: |
           source activate test
