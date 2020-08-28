@@ -1,0 +1,290 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scanplans.move_and_do &mdash; bluesky_scanplans 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> bluesky_scanplans
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/scanplans.html">Package API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../min_versions.html">Minimum Version of Python and NumPy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">bluesky_scanplans</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>scanplans.move_and_do</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scanplans.move_and_do</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Conduct the plans for the samples one by one.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">typing</span> <span class="k">as</span> <span class="nn">tp</span>
+
+<span class="kn">import</span> <span class="nn">bluesky.plan_stubs</span> <span class="k">as</span> <span class="nn">bps</span>
+<span class="kn">from</span> <span class="nn">xpdacq.beamtime</span> <span class="kn">import</span> <span class="n">Beamtime</span>
+<span class="kn">from</span> <span class="nn">xpdacq.beamtime</span> <span class="kn">import</span> <span class="n">xpd_configuration</span>
+
+<span class="kn">from</span> <span class="nn">scanplans.mdgetters</span> <span class="kn">import</span> <span class="n">get_from_sample</span>
+<span class="kn">from</span> <span class="nn">scanplans.mdgetters</span> <span class="kn">import</span> <span class="n">translate_to_plan</span><span class="p">,</span> <span class="n">translate_to_sample</span>
+
+
+<div class="viewcode-block" id="move_and_do_many"><a class="viewcode-back" href="../../api/scanplans.html#scanplans.move_and_do.move_and_do_many">[docs]</a><span class="k">def</span> <span class="nf">move_and_do_many</span><span class="p">(</span>
+        <span class="n">bt</span><span class="p">:</span> <span class="n">Beamtime</span><span class="p">,</span> <span class="n">sps</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">tp</span><span class="o">.</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span> <span class="n">wait_times</span><span class="p">:</span> <span class="n">tp</span><span class="o">.</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+        <span class="n">wait_at_first</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">sample_x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample_x&quot;</span><span class="p">,</span> <span class="n">sample_y</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample_y&quot;</span><span class="p">,</span>
+        <span class="n">x_controller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;x_controller&quot;</span><span class="p">,</span>
+        <span class="n">y_controller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;y_controller&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">List</span><span class="p">[</span><span class="n">tp</span><span class="o">.</span><span class="n">Generator</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Move to the sample and conduct the bluesky plan on the sample one by one.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    bt : Beamtime</span>
+<span class="sd">        The beamtime object.</span>
+
+<span class="sd">    sps : list</span>
+<span class="sd">        A list of (sample index, plan index). The index is shown in the &#39;bt.list()&#39;.</span>
+
+<span class="sd">    wait_times : int or list</span>
+<span class="sd">        The wait time for all the samples.</span>
+
+<span class="sd">    wait_at_first : bool</span>
+<span class="sd">        Whether to wait before the plan is conducted for the first samples. If False, the plan will be conducted</span>
+<span class="sd">        immediately to the first sample no matter how wait_time is set.</span>
+
+<span class="sd">    sample_x : str</span>
+<span class="sd">        The key to the x position of the sample in the sample information. Default &#39;sample_y&#39;.</span>
+
+<span class="sd">    sample_y : str</span>
+<span class="sd">        The key to the y position of the sample in the sample information. Default &#39;sample_x&#39;.</span>
+
+<span class="sd">    x_controller : str</span>
+<span class="sd">        The key to the x position controller in `~xpdacq.beamtime.xqd_configuration`.</span>
+
+<span class="sd">    y_controller : str</span>
+<span class="sd">        The key to the x position controller in `~xpdacq.beamtime.xqd_configuration`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    plans : list</span>
+<span class="sd">        A list of the bluesky plans. Each plan is a generator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wait_times</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+        <span class="n">wait_times</span> <span class="o">=</span> <span class="p">[</span><span class="n">wait_times</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">sps</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">wait_times</span> <span class="o">=</span> <span class="n">wait_times</span><span class="p">[:]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">wait_at_first</span><span class="p">:</span>
+        <span class="n">wait_times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">move_and_do_one</span><span class="p">(</span>
+            <span class="n">bt</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span>
+            <span class="n">wait_time</span><span class="o">=</span><span class="n">wt</span><span class="p">,</span>
+            <span class="n">sample_x</span><span class="o">=</span><span class="n">sample_x</span><span class="p">,</span> <span class="n">sample_y</span><span class="o">=</span><span class="n">sample_y</span><span class="p">,</span>
+            <span class="n">x_controller</span><span class="o">=</span><span class="n">x_controller</span><span class="p">,</span> <span class="n">y_controller</span><span class="o">=</span><span class="n">y_controller</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">p</span><span class="p">),</span> <span class="n">wt</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sps</span><span class="p">,</span> <span class="n">wait_times</span><span class="p">)</span>
+    <span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">move_and_do_one</span><span class="p">(</span>
+        <span class="n">bt</span><span class="p">:</span> <span class="n">Beamtime</span><span class="p">,</span> <span class="n">sample_ind</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">plan_ind</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">wait_time</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="n">sample_x</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample_x&quot;</span><span class="p">,</span>
+        <span class="n">sample_y</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sample_y&quot;</span><span class="p">,</span> <span class="n">x_controller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;x_controller&quot;</span><span class="p">,</span> <span class="n">y_controller</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span>
+        <span class="s2">&quot;y_controller&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tp</span><span class="o">.</span><span class="n">Generator</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Move to the sample and conduct the plan.&quot;&quot;&quot;</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">translate_to_sample</span><span class="p">(</span><span class="n">bt</span><span class="p">,</span> <span class="n">sample_ind</span><span class="p">)</span>
+    <span class="n">plan</span> <span class="o">=</span> <span class="n">translate_to_plan</span><span class="p">(</span><span class="n">bt</span><span class="p">,</span> <span class="n">plan_ind</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+    <span class="n">xc</span> <span class="o">=</span> <span class="n">xpd_configuration</span><span class="p">[</span><span class="n">x_controller</span><span class="p">]</span>
+    <span class="n">yc</span> <span class="o">=</span> <span class="n">xpd_configuration</span><span class="p">[</span><span class="n">y_controller</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">get_from_sample</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">sample_x</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">get_from_sample</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">sample_y</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">bps</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start moving to sample </span><span class="si">{}</span><span class="s2"> at (</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">).&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample_ind</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">yield from</span> <span class="n">bps</span><span class="o">.</span><span class="n">mv</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finish. &quot;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">bps</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start sleeping for </span><span class="si">{}</span><span class="s2"> s.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">wait_time</span><span class="p">))</span>
+    <span class="k">yield from</span> <span class="n">bps</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait_time</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Wake up.&quot;</span><span class="p">)</span>
+    <span class="k">yield from</span> <span class="n">bps</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start plan </span><span class="si">{}</span><span class="s2"> for sample </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">plan_ind</span><span class="p">,</span> <span class="n">sample_ind</span><span class="p">))</span>
+    <span class="k">yield from</span> <span class="n">plan</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finish.&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Songsheng Tao
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

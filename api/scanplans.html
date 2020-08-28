@@ -1,0 +1,431 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scanplans package &mdash; bluesky_scanplans 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Minimum Version of Python and NumPy" href="../min_versions.html" />
+    <link rel="prev" title="Usage" href="../usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> bluesky_scanplans
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Package API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-scanplans.beamtimehelper">scanplans.beamtimehelper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-scanplans.cryostat">scanplans.cryostat module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-scanplans.move_and_do">scanplans.move_and_do module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../min_versions.html">Minimum Version of Python and NumPy</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">bluesky_scanplans</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>scanplans package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/scanplans.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scanplans-package">
+<h1>scanplans package<a class="headerlink" href="#scanplans-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-scanplans.beamtimehelper">
+<span id="scanplans-beamtimehelper-module"></span><h2>scanplans.beamtimehelper module<a class="headerlink" href="#module-scanplans.beamtimehelper" title="Permalink to this headline">¶</a></h2>
+<p>A class to print sample information and generate bluesky plan to target samples.</p>
+<dl class="py class">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper">
+<em class="property">class </em><code class="sig-prename descclassname">scanplans.beamtimehelper.</code><code class="sig-name descname">BeamtimeHelper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n">xpdacq.beamtime.Beamtime</span></em>, <em class="sig-param"><span class="n">pos_key</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'sample_x', 'sample_y'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A class helping to tackle with tasks related to samples on a rack during the beam time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>_bt</strong></dt><dd><p>The instance storing meta data of the sample and plan</p>
+</dd>
+<dt><strong>_pos_key</strong></dt><dd><p>The key for the position of samples. Default is the global variable POS_KEYS</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper.aim_at_sample">
+<code class="sig-name descname">aim_at_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper.aim_at_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper.aim_at_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generator of message: move the sample to the beam spot according to sample position metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample</strong></dt><dd><p>The sample index or sample name key</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Initiate a BeamtimeHelper.
+&gt;&gt;&gt; bthelper = BeamtimeHelper(bt)
+Check the motors.
+&gt;&gt;&gt; xpd_configuration[“x_controller”]
+&gt;&gt;&gt; xpd_configuration[“y_controller”]
+Aim at the sample of index 0 in bt.
+&gt;&gt;&gt; RE(bthelper.aim_at_sample(0))
+Aim at the sample “Ni” in bt.
+&gt;&gt;&gt; RE(bthelper.aim_at_sample(“Ni”))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper.get_plan">
+<code class="sig-name descname">get_plan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">plan</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Generator<a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper.get_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper.get_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the plan (message generator).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plan</strong></dt><dd><p>The plan index or plan name key</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>plan_gen</dt><dd><p>The plan message generator.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper.get_sample">
+<code class="sig-name descname">get_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sample</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper.get_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper.get_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get metadata of a sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sample</strong></dt><dd><p>The sample index or sample name key</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>sample_meta</dt><dd><p>the meta data of a sample</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper.print_plan">
+<code class="sig-name descname">print_plan</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">plans</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper.print_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper.print_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the plan information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>plans</strong></dt><dd><p>The plan index or plan name key</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="scanplans.beamtimehelper.BeamtimeHelper.print_sample">
+<code class="sig-name descname">print_sample</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">samples</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper.print_sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper.print_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the sample information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>samples</strong></dt><dd><p>The sample index or sample name key</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-scanplans.cryostat">
+<span id="scanplans-cryostat-module"></span><h2>scanplans.cryostat module<a class="headerlink" href="#module-scanplans.cryostat" title="Permalink to this headline">¶</a></h2>
+<p>This script contains the plan for cryostat measurement. How to use it:
+(1) Download the script to userScript.
+(2) Run the script in ipython interface.</p>
+<blockquote>
+<div><p>‘%run userScript/cryostat.py’</p>
+</div></blockquote>
+<p>(3) Instantiate a python generator as the plan. Here is an example where the beamtime object is ‘bt’,
+the temperature controller is ‘cryostat_T’, the position controller is ‘ss_stage_x’ and the plan is to set
+temperature to 295 K and 300 K and take a single shot for two samples at each temperature. The samples are
+loaded at x-positions: 10 mm and 10.2 mm. Their corresponding index in bt is 1 and 2. The exposure time is 30 s
+and 60 s respectively.</p>
+<blockquote>
+<div><p>‘plan = cryostat_plan(bt, cryostat_T, [295, 300], ss_stage_x, [10, 10.2], [1, 2], [30, 60])’</p>
+</div></blockquote>
+<ol class="arabic" start="4">
+<li><p>Let ‘xrun’ rxecute the plan.</p>
+<p>‘xrun({}, plan)’</p>
+<p>We don’t need to worry about the samples information because it will be added into metadata by this plan so
+the first positional argument of ‘xrun’ is given a empty dictionary.</p>
+</li>
+</ol>
+<dl class="py function">
+<dt id="scanplans.cryostat.cryostat_plan">
+<code class="sig-prename descclassname">scanplans.cryostat.</code><code class="sig-name descname">cryostat_plan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)">object</a></span></em>, <em class="sig-param"><span class="n">temp_motor</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)">object</a></span></em>, <em class="sig-param"><span class="n">temperatures</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">posi_motor</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)">object</a></span></em>, <em class="sig-param"><span class="n">positions</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">samples</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">exposures</span><span class="p">:</span> <span class="n">List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">temp_to_power</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/cryostat.html#cryostat_plan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.cryostat.cryostat_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scanplan of cryostat measurement.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>bt</strong><span class="classifier">beamtime object</span></dt><dd><blockquote>
+<div><p>The beamtime object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>temp_motor<span class="classifier">motor object</span></dt><dd><p>The controller of temperature.</p>
+</dd>
+<dt>temperatures<span class="classifier">List[float]</span></dt><dd><p>A list of temperature setpoints.</p>
+</dd>
+<dt>posi_motor<span class="classifier">motor object</span></dt><dd><p>The controller of positions.</p>
+</dd>
+<dt>positions<span class="classifier">List[float]</span></dt><dd><p>A list of positions.</p>
+</dd>
+<dt>samples<span class="classifier">List[int]</span></dt><dd><p>A list of index of samples in bt.</p>
+</dd>
+<dt>exposures<span class="classifier">List[float]</span></dt><dd><p>A list of exposure time.</p>
+</dd>
+<dt>temp_to_power<span class="classifier">dict</span></dt><dd><p>A mapping from temperature range to power. The range is open at left and close at right. If None,
+default setting (see function ‘get_heater_range’) is used. Default None.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Message of the plan</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-scanplans.move_and_do">
+<span id="scanplans-move-and-do-module"></span><h2>scanplans.move_and_do module<a class="headerlink" href="#module-scanplans.move_and_do" title="Permalink to this headline">¶</a></h2>
+<p>Conduct the plans for the samples one by one.</p>
+<dl class="py function">
+<dt id="scanplans.move_and_do.move_and_do_many">
+<code class="sig-prename descclassname">scanplans.move_and_do.</code><code class="sig-name descname">move_and_do_many</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n">xpdacq.beamtime.Beamtime</span></em>, <em class="sig-param"><span class="n">sps</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">wait_times</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">wait_at_first</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sample_x</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_x'</span></em>, <em class="sig-param"><span class="n">sample_y</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_y'</span></em>, <em class="sig-param"><span class="n">x_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'x_controller'</span></em>, <em class="sig-param"><span class="n">y_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'y_controller'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Generator<span class="p">]</span><a class="reference internal" href="../_modules/scanplans/move_and_do.html#move_and_do_many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.move_and_do.move_and_do_many" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move to the sample and conduct the bluesky plan on the sample one by one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>bt</strong><span class="classifier">Beamtime</span></dt><dd><p>The beamtime object.</p>
+</dd>
+<dt><strong>sps</strong><span class="classifier">list</span></dt><dd><p>A list of (sample index, plan index). The index is shown in the ‘bt.list()’.</p>
+</dd>
+<dt><strong>wait_times</strong><span class="classifier">int or list</span></dt><dd><p>The wait time for all the samples.</p>
+</dd>
+<dt><strong>wait_at_first</strong><span class="classifier">bool</span></dt><dd><p>Whether to wait before the plan is conducted for the first samples. If False, the plan will be conducted
+immediately to the first sample no matter how wait_time is set.</p>
+</dd>
+<dt><strong>sample_x</strong><span class="classifier">str</span></dt><dd><p>The key to the x position of the sample in the sample information. Default ‘sample_y’.</p>
+</dd>
+<dt><strong>sample_y</strong><span class="classifier">str</span></dt><dd><p>The key to the y position of the sample in the sample information. Default ‘sample_x’.</p>
+</dd>
+<dt><strong>x_controller</strong><span class="classifier">str</span></dt><dd><p>The key to the x position controller in <cite>~xpdacq.beamtime.xqd_configuration</cite>.</p>
+</dd>
+<dt><strong>y_controller</strong><span class="classifier">str</span></dt><dd><p>The key to the x position controller in <cite>~xpdacq.beamtime.xqd_configuration</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>plans</strong><span class="classifier">list</span></dt><dd><p>A list of the bluesky plans. Each plan is a generator.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../min_versions.html" class="btn btn-neutral float-right" title="Minimum Version of Python and NumPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Songsheng Tao
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
