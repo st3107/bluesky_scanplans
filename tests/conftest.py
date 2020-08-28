@@ -1,11 +1,11 @@
-import pytest
 from importlib.resources import path
-from pathlib import Path
-from xpdacq.beamtimeSetup import load_beamtime
-from xpdacq.beamtime import Beamtime
+
+import pytest
 from bluesky import RunEngine
 from ophyd.sim import hw
+from xpdacq.beamtime import Beamtime
 from xpdacq.beamtime import xpd_configuration
+from xpdacq.beamtimeSetup import load_beamtime
 from xpdacq.simulation import xpd_pe1c
 
 with path("data", "__init__.py") as p:

@@ -1,19 +1,20 @@
 import pytest
-from scanplans.move_and_do import move_and_do_many
 from bluesky.simulators import summarize_plan
+
+from scanplans.move_and_do import move_and_do_many
 
 
 @pytest.mark.parametrize(
     "args,kwargs",
     [
         (
-                ([(0, 0)], 10), {}
+            ([(0, 0)], 10), {}
         ),
         (
-                ([(0, 0)], 10, True), {}
+            ([(0, 0)], 10, True), {}
         ),
         (
-                ([(0, 0), (1, 1)], [0, 10]), {}
+            ([(0, 0), (1, 1)], [0, 10]), {}
         )
     ]
 )
