@@ -2,7 +2,7 @@
 from typing import Union, List
 
 from bluesky.preprocessors import msg_mutator
-from xpdacq.beamtime import Beamtime, ScanPlan, Sample
+from xpdacq.beamtime import Beamtime, ScanPlan
 from xpdacq.xpdacq import _sample_injector_factory
 
 __all__ = [
@@ -99,14 +99,15 @@ def translate_to_plan(beamtime, plan, sample_md):
     return plan
 
 
-def get_from_sample(sample: Sample, key):
+def get_from_sample(sample, key):
     """
     Get the value of the key in a Sample instance. If fail to access, print out the message.
 
     Parameters
     ----------
-    sample : Sample
+    sample
         A Sample object.
+
     key : basestring
         The name of the key.
 

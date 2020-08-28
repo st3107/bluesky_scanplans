@@ -1,0 +1,12 @@
+[run]
+source =
+    scanplans
+[report]
+omit =
+    */python?.?/*
+    */site-packages/nose/*
+    # ignore _version.py and versioneer.py
+    # ignore the cli entry point
+
+exclude_lines =
+    if __name__ == '__main__':

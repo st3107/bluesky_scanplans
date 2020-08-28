@@ -11,8 +11,8 @@ __all__ = [
     "BeamtimeHelper"
 ]
 POS_KEYS = (
-    "position_x",
-    "position_y"
+    "sample_x",
+    "sample_y"
 )
 
 
@@ -128,15 +128,15 @@ class BeamtimeHelper:
         Initiate a BeamtimeHelper.
         >>> bthelper = BeamtimeHelper(bt)
         Check the motors.
-        >>> xpd_configuration["posx_controller"]
-        >>> xpd_configuration["posy_controller"]
+        >>> xpd_configuration["x_controller"]
+        >>> xpd_configuration["y_controller"]
         Aim at the sample of index 0 in bt.
         >>> RE(bthelper.aim_at_sample(0))
         Aim at the sample "Ni" in bt.
         >>> RE(bthelper.aim_at_sample("Ni"))
         """
-        posx_controller = xpd_configuration["posx_controller"]
-        posy_controller = xpd_configuration["posy_controller"]
+        posx_controller = xpd_configuration["x_controller"]
+        posy_controller = xpd_configuration["y_controller"]
         sample_meta = self.get_sample(sample)
         name = sample_meta.get("sample_name")
         print(f"INFO: Target sample {name}")

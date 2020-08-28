@@ -1,0 +1,10 @@
+- sa_uid: 2d8fda7e
+  sample_composition:
+    Ni: 1
+  sample_name: Ni1
+- bt_experimenters:
+  - Billinge
+  bt_piLast: Billinge
+  bt_safN: '300000'
+  bt_uid: 25b99ac4
+  bt_wavelength: null

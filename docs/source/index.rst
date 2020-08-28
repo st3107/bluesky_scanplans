@@ -6,4 +6,5 @@ bluesky_scanplans Documentation
 
    installation
    usage
+   Package API <api/scanplans.rst>
    min_versions
