@@ -34,11 +34,6 @@ jobs:
           source activate test
           python -m pip install .
 
-      - name: run the tests and check for test coverage
-        run: |
-          source activate test
-          coverage run -m pytest tests --showlocals
-
       - name: generate test coverage report and upload to codecov
         run: |
           source activate test
