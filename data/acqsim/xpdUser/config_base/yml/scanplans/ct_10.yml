@@ -1,0 +1,11 @@
+- sp_args: !!python/tuple
+  - 10
+  sp_kwargs: {}
+  sp_plan_name: ct
+  sp_uid: 9c432c85
+- bt_experimenters:
+  - Billinge
+  bt_piLast: Billinge
+  bt_safN: '300000'
+  bt_uid: 25b99ac4
+  bt_wavelength: null

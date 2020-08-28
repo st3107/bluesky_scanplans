@@ -1,0 +1,126 @@
+_dark_dict_list:
+- acq_time: 0.1
+  exposure: !!python/object/apply:numpy.core.multiarray.scalar
+  - &id001 !!python/object/apply:numpy.dtype
+    args:
+    - f8
+    - false
+    - true
+    state: !!python/tuple
+    - 3
+    - <
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - !!binary |
+    AAAAAAAAJEA=
+  timestamp: 1598565418.617152
+  uid: 3f63d444-60df-40d1-b427-f4084788d0eb
+- acq_time: 0.1
+  exposure: !!python/object/apply:numpy.core.multiarray.scalar
+  - *id001
+  - !!binary |
+    AAAAAAAAFEA=
+  timestamp: 1598565419.519041
+  uid: 633f00c0-82ee-4b13-b094-fb810cb427c4
+_exclude_dir:
+- /Users/sst/acqsim/xpdUser
+- /Users/sst/acqsim/xpdConfig
+- /Users/sst/acqsim/xpdUser/config_base/yml
+_export_tar_dir:
+- /Users/sst/acqsim/xpdUser/config_base
+- /Users/sst/acqsim/xpdUser/userScripts
+all_folders: &id002
+- /Users/sst/acqsim/xpdUser
+- /Users/sst/acqsim/xpdConfig
+- /Users/sst/acqsim/xpdUser/config_base/yml
+- /Users/sst/acqsim/xpdUser/config_base
+- /Users/sst/acqsim/xpdUser/config_base/yml/samples
+- /Users/sst/acqsim/xpdUser/config_base/yml/scanplans
+- /Users/sst/acqsim/xpdUser/tiff_base
+- /Users/sst/acqsim/xpdUser/userScripts
+- /Users/sst/acqsim/xpdUser/Import
+- /Users/sst/acqsim/xpdUser/userAnalysis
+allfolders: *id002
+archive_base_dir: /Users/sst/acqsim/archive/.userbeamtimearchive
+archive_base_dir_name: .userbeamtimearchive
+archive_dir: /Users/sst/acqsim/archive/.userbeamtimearchive/2020
+archive_root_dir: /Users/sst/acqsim/archive
+auto_dark: true
+auto_load_calib: true
+base: /Users/sst/acqsim
+base_dir: /Users/sst/acqsim
+beamline_host_name:
+- xf28id2-ws2
+- xf28id2-ws3
+beamline_id: 28-id-2
+blconfig_dir: /Users/sst/acqsim/xpdConfig
+blconfig_dir_name: xpdConfig
+blconfig_name: XPD_beamline_config.yml
+blconfig_path: /Users/sst/acqsim/xpdConfig/XPD_beamline_config.yml
+bt_dir: /Users/sst/acqsim/xpdUser/config_base/yml
+calib_config_name: xpdAcq_calib_info.yml
+config_base: /Users/sst/acqsim/xpdUser/config_base
+dark_field_key: sc_dk_field_uid
+dark_window: 3000
+det_image_field: &id003
+- pe1_image
+- pe2_image
+- pe3_image
+diffraction_dets:
+- pe1c
+- pe1
+- pe2c
+- pe2
+- pe1_image
+- pe2_image
+- pe3_image
+- dexela_image
+dk_window: 3000
+exp_broker_name: xpd_sim_databroker
+exp_hash_uid: c6642d67-5328-4d4e-acce-b0ed484dc77c
+facility: sim
+frame_acq_time: 0.1
+frame_acquire_time: 0.1
+glbl_yaml_name: glbl.yml
+glbl_yaml_path: /Users/sst/acqsim/xpdUser/config_base/yml/glbl.yml
+group: sim
+home: /Users/sst/acqsim/xpdUser
+home_dir: /Users/sst/acqsim/xpdUser
+home_dir_name: xpdUser
+image_fields: *id003
+import_dir: /Users/sst/acqsim/xpdUser/Import
+inbound_proxy_address: 127.0.0.1:5567
+is_simulation: true
+mask_kwargs:
+  alpha: 3.0
+  bs_width: 13
+  edge: 30
+  lower_thresh: 0.0
+  tri_offset: 13
+  v_asym: 0
+name: glbl
+outbound_proxy_address: 127.0.0.1:5568
+owner: sim
+radiogram_dets:
+- blackfly_det
+radiograph_names:
+- blackfly_det
+sample_dir: /Users/sst/acqsim/xpdUser/config_base/yml/samples
+scanplan_dir: /Users/sst/acqsim/xpdUser/config_base/yml/scanplans
+shutter_conf:
+  close: 0
+  open: 60
+shutter_control: true
+shutter_sleep: 0.1
+simulation: true
+tiff_base: /Users/sst/acqsim/xpdUser/tiff_base
+user_backup_dir_name: '2020'
+userscript_dir: /Users/sst/acqsim/xpdUser/userScripts
+usrAnalysis_dir: /Users/sst/acqsim/xpdUser/userAnalysis
+usrScript_dir: /Users/sst/acqsim/xpdUser/userScripts
+xpdconfig: /Users/sst/acqsim/xpdConfig
+yaml_dir: /Users/sst/acqsim/xpdUser/config_base/yml
