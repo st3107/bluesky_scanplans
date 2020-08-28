@@ -28,7 +28,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as readme_file:
 
 setup(
     name='scanplans',
-    version='0.0.0',
+    version='0.1.0',
     description="Bluesky plans from Billinge group",
     long_description=readme,
     author="Songsheng Tao",
