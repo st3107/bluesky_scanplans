@@ -29,8 +29,6 @@ from bluesky.preprocessors import subs_wrapper
 from xpdacq.beamtime import _configure_area_det
 from xpdacq.xpdacq_conf import xpd_configuration
 
-from scanplans.tools import translate_to_sample
-
 
 def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], posi_motor: object,
                   positions: List[float],
@@ -39,7 +37,7 @@ def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], pos
     The scanplan of cryostat measurement.
 
     Parameters
-    -------
+    ----------
         bt : beamtime object
             The beamtime object.
 
@@ -66,7 +64,7 @@ def cryostat_plan(bt: object, temp_motor: object, temperatures: List[float], pos
             default setting (see function 'get_heater_range') is used. Default None.
 
     Yields
-    -------
+    ------
         Message of the plan
     """
     samples = translate_to_sample(bt, samples)
