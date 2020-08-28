@@ -1,11 +1,12 @@
 """Conduct the plans for the samples one by one."""
-from xpdacq.xpdacq import CustomizedRunEngine
+import typing as tp
+
+import bluesky.plan_stubs as bps
 from xpdacq.beamtime import Beamtime
 from xpdacq.beamtime import xpd_configuration
-from scanplans.mdgetters import translate_to_plan, translate_to_sample
+
 from scanplans.mdgetters import get_from_sample
-import typing as tp
-import bluesky.plan_stubs as bps
+from scanplans.mdgetters import translate_to_plan, translate_to_sample
 
 
 def move_and_do_many(

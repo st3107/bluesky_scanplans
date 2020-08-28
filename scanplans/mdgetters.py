@@ -2,7 +2,7 @@
 from typing import Union, List
 
 from bluesky.preprocessors import msg_mutator
-from xpdacq.beamtime import Beamtime, ScanPlan, Sample
+from xpdacq.beamtime import Beamtime, ScanPlan
 from xpdacq.xpdacq import _sample_injector_factory
 
 __all__ = [
