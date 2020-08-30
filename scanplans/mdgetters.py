@@ -1,5 +1,5 @@
 """The functions to get metadata related to the samples and plans from the Beamtime object."""
-from typing import Union, List
+from typing import Union, List, Generator
 
 from bluesky.preprocessors import msg_mutator
 from xpdacq.beamtime import Beamtime, ScanPlan
@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-def translate_to_sample(beamtime: Beamtime, sample: Union[int, List[int], dict]):
+def translate_to_sample(beamtime: Beamtime, sample: Union[int, str, List[int], List[str], dict]):
     """Translate a sample into a list of dict
 
     Parameters
@@ -20,7 +20,7 @@ def translate_to_sample(beamtime: Beamtime, sample: Union[int, List[int], dict])
     beamtime : Beamtime
         The BeamTime instance.
 
-    sample : list of int or dict-like
+    sample : list, int, str, or dict-like
         Sample metadata. If a beamtime object is linked,
         an integer will be interpreted as the index appears in the
         ``bt.list()`` method, corresponding metadata will be passed.
@@ -45,8 +45,19 @@ def translate_to_sample(beamtime: Beamtime, sample: Union[int, List[int], dict])
                 )
             )
             return
+    elif isinstance(sample, str):
+        try:
+            sample_md = beamtime.samples[sample]
+        except KeyError:
+            print(
+                "WARNING: hmm, there is no sample with key `{}`"
+                ", please do `bt.list()` to check if it exists yet".format(
+                    sample
+                )
+            )
+            return
     else:
-        raise TypeError(f"The type of sample is {type(sample)}. Expect list, int or dict-like.")
+        raise TypeError(f"The type of sample is {type(sample)}. Expect list, int, str, or dict-like.")
     return sample_md
 
 
@@ -57,13 +68,15 @@ def translate_to_plan(beamtime, plan, sample_md):
     ----------
     beamtime : Beamtime
         The BeamTime instance.
+
     sample_md : list of dict-like
         Sample metadata. If a beamtime object is linked,
         an integer will be interpreted as the index appears in the
         ``bt.list()`` method, corresponding metadata will be passed.
         A customized dict can also be passed as the sample
         metadata.
-    plan : list of int or generator
+
+    plan : list, int, str, or dict-like
         Scan plan. If a beamtime object is linked, an integer
         will be interpreted as the index appears in the
         ``bt.list()`` method, corresponding scan plan will be
@@ -92,6 +105,21 @@ def translate_to_plan(beamtime, plan, sample_md):
                 )
                 return
         # If the plan is an xpdAcq 'ScanPlan', make the actual plan.
+        elif isinstance(plan, str):
+            try:
+                plan = beamtime.scanplans[plan]
+            except KeyError:
+                print(
+                    "WARNING: hmm, there is no scanplan with key `{}`"
+                    ", please do `bt.list()` to check if it exists yet".format(
+                        plan
+                    )
+                )
+                return
+        elif isinstance(plan, Generator):
+            pass
+        else:
+            raise TypeError(f"The type of plan is {type(plan)}. Expect list, int, str, or dict-like.")
         if isinstance(plan, ScanPlan):
             plan = plan.factory()
         mm = _sample_injector_factory(sample_md)
