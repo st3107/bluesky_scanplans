@@ -1,4 +1,5 @@
 """An advanced temperature ramping plan."""
+import bluesky.plan_stubs as bps
 from ophyd.sim import SynAxis
 from xpdacq.beamtime import Tramp
 from xpdacq.xpdacq import xpd_configuration
@@ -40,5 +41,5 @@ def Tramp2(dets: list, exposure: float, Tstart: float, Tstop: float, Tstep: floa
     """
     temp_controller: SynAxis = xpd_configuration["temp_controller"]
     if ramp_rate is not None:
-        temp_controller.configure({"velocity": ramp_rate})
+        yield from bps.configure(temp_controller, {"velocity": ramp_rate})
     yield from Tramp(dets, exposure, Tstart, Tstop, Tstep)
