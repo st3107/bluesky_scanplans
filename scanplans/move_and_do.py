@@ -77,8 +77,8 @@ def move_and_do_one(
     plan = translate_to_plan(bt, plan_ind, sample)
     xc = xpd_configuration[x_controller]
     yc = xpd_configuration[y_controller]
-    x = get_from_sample(sample, sample_x)
-    y = get_from_sample(sample, sample_y)
+    x = float(get_from_sample(sample, sample_x))
+    y = float(get_from_sample(sample, sample_y))
     yield from bps.checkpoint()
     print("Start moving to sample {} at ({}, {}).".format(sample_ind, x, y))
     yield from bps.mv(xc, x, yc, y)
