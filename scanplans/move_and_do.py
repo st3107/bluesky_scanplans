@@ -10,7 +10,9 @@ from scanplans.mdgetters import translate_to_plan, translate_to_sample
 
 
 def move_and_do_many(
-        bt: Beamtime, sps: tp.List[tp.Tuple[int, int]], wait_times: tp.Union[float, tp.List[float]] = 0.,
+        bt: Beamtime,
+        sps: tp.List[tp.Tuple[tp.Union[int, str], tp.Union[int, str, tp.Generator]]],
+        wait_times: tp.Union[float, tp.List[float]] = 0.,
         wait_at_first: bool = False,
         sample_x: str = "sample_x", sample_y: str = "sample_y",
         x_controller: str = "x_controller",
@@ -26,7 +28,7 @@ def move_and_do_many(
     sps : list
         A list of (sample index, plan index). The index is shown in the 'bt.list()'.
 
-    wait_times : int or list
+    wait_times : float or list of float
         The wait time for all the samples.
 
     wait_at_first : bool
@@ -68,7 +70,8 @@ def move_and_do_many(
 
 
 def move_and_do_one(
-        bt: Beamtime, sample_ind: int, plan_ind: int, wait_time: float = 0., sample_x: str = "sample_x",
+        bt: Beamtime, sample_ind: tp.Union[int, str], plan_ind: tp.Union[int, str, tp.Generator],
+        wait_time: float = 0., sample_x: str = "sample_x",
         sample_y: str = "sample_y", x_controller: str = "x_controller", y_controller: str =
         "y_controller"
 ) -> tp.Generator:
