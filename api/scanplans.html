@@ -94,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-scanplans.beamtimehelper">scanplans.beamtimehelper module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-scanplans.cryostat">scanplans.cryostat module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-scanplans.move_and_do">scanplans.move_and_do module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-scanplans.tramp2">scanplans.tramp2 module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../min_versions.html">Minimum Version of Python and NumPy</a></li>
@@ -169,8 +170,7 @@
 <dl class="py class">
 <dt id="scanplans.beamtimehelper.BeamtimeHelper">
 <em class="property">class </em><code class="sig-prename descclassname">scanplans.beamtimehelper.</code><code class="sig-name descname">BeamtimeHelper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n">xpdacq.beamtime.Beamtime</span></em>, <em class="sig-param"><span class="n">pos_key</span><span class="p">:</span> <span class="n">Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'sample_x', 'sample_y'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/beamtimehelper.html#BeamtimeHelper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.beamtimehelper.BeamtimeHelper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>A class helping to tackle with tasks related to samples on a rack during the beam time.</p>
+<dd><p>A class helping to tackle with tasks related to samples on a rack during the beam time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl class="simple">
@@ -343,7 +343,7 @@ default setting (see function ‘get_heater_range’) is used. Default None.</p>
 <p>Conduct the plans for the samples one by one.</p>
 <dl class="py function">
 <dt id="scanplans.move_and_do.move_and_do_many">
-<code class="sig-prename descclassname">scanplans.move_and_do.</code><code class="sig-name descname">move_and_do_many</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n">xpdacq.beamtime.Beamtime</span></em>, <em class="sig-param"><span class="n">sps</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">wait_times</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">wait_at_first</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sample_x</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_x'</span></em>, <em class="sig-param"><span class="n">sample_y</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_y'</span></em>, <em class="sig-param"><span class="n">x_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'x_controller'</span></em>, <em class="sig-param"><span class="n">y_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'y_controller'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Generator<span class="p">]</span><a class="reference internal" href="../_modules/scanplans/move_and_do.html#move_and_do_many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.move_and_do.move_and_do_many" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">scanplans.move_and_do.</code><code class="sig-name descname">move_and_do_many</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bt</span><span class="p">:</span> <span class="n">xpdacq.beamtime.Beamtime</span></em>, <em class="sig-param"><span class="n">sps</span><span class="p">:</span> <span class="n">List<span class="p">[</span>Tuple<span class="p">[</span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span><span class="p">, </span>Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)">int</a><span class="p">, </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">, </span>Generator<span class="p">]</span><span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">wait_times</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">, </span>List<span class="p">[</span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">wait_at_first</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">sample_x</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_x'</span></em>, <em class="sig-param"><span class="n">sample_y</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'sample_y'</span></em>, <em class="sig-param"><span class="n">x_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'x_controller'</span></em>, <em class="sig-param"><span class="n">y_controller</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)">str</a></span> <span class="o">=</span> <span class="default_value">'y_controller'</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Generator<span class="p">]</span><a class="reference internal" href="../_modules/scanplans/move_and_do.html#move_and_do_many"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.move_and_do.move_and_do_many" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move to the sample and conduct the bluesky plan on the sample one by one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -352,7 +352,7 @@ default setting (see function ‘get_heater_range’) is used. Default None.</p>
 </dd>
 <dt><strong>sps</strong><span class="classifier">list</span></dt><dd><p>A list of (sample index, plan index). The index is shown in the ‘bt.list()’.</p>
 </dd>
-<dt><strong>wait_times</strong><span class="classifier">int or list</span></dt><dd><p>The wait time for all the samples.</p>
+<dt><strong>wait_times</strong><span class="classifier">float or list of float</span></dt><dd><p>The wait time for all the samples.</p>
 </dd>
 <dt><strong>wait_at_first</strong><span class="classifier">bool</span></dt><dd><p>Whether to wait before the plan is conducted for the first samples. If False, the plan will be conducted
 immediately to the first sample no matter how wait_time is set.</p>
@@ -371,6 +371,41 @@ immediately to the first sample no matter how wait_time is set.</p>
 <dd class="field-even"><dl class="simple">
 <dt><strong>plans</strong><span class="classifier">list</span></dt><dd><p>A list of the bluesky plans. Each plan is a generator.</p>
 </dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-scanplans.tramp2">
+<span id="scanplans-tramp2-module"></span><h2>scanplans.tramp2 module<a class="headerlink" href="#module-scanplans.tramp2" title="Permalink to this headline">¶</a></h2>
+<p>An advanced temperature ramping plan.</p>
+<dl class="py function">
+<dt id="scanplans.tramp2.Tramp2">
+<code class="sig-prename descclassname">scanplans.tramp2.</code><code class="sig-name descname">Tramp2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dets</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)">list</a></span></em>, <em class="sig-param"><span class="n">exposure</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em>, <em class="sig-param"><span class="n">Tstart</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em>, <em class="sig-param"><span class="n">Tstop</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em>, <em class="sig-param"><span class="n">Tstep</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span></em>, <em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">ramp_rate</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)">float</a></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/scanplans/tramp2.html#Tramp2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#scanplans.tramp2.Tramp2" title="Permalink to this definition">¶</a></dt>
+<dd><p>A temperature ramping plan with ramping rate configuration.</p>
+<p>The ramping rate will be configured before the ramping start. The ramping will be done continuously
+without holding temperature at exposure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>dets</strong><span class="classifier">list</span></dt><dd><p>A list of detectors. Dummy. Not used.</p>
+</dd>
+<dt><strong>exposure</strong><span class="classifier">float</span></dt><dd><p>The exposure time in second.</p>
+</dd>
+<dt><strong>Tstart</strong><span class="classifier">float</span></dt><dd><p>The start temperature in K (included).</p>
+</dd>
+<dt><strong>Tstop</strong><span class="classifier">float</span></dt><dd><p>The stop temperature in K (incldued)</p>
+</dd>
+<dt><strong>Tstep</strong><span class="classifier">float</span></dt><dd><p>The temperature step in K.</p>
+</dd>
+<dt><strong>ramp_rate</strong><span class="classifier">float</span></dt><dd><p>The temperature ramping rate. Make sure the temperature controller has the <cite>velocity</cite> configuration.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Bluesky plan.</dt><dd></dd>
 </dl>
 </dd>
 </dl>
