@@ -6,7 +6,7 @@ from ophyd.sim import hw
 from xpdacq.beamtime import Beamtime
 from xpdacq.beamtime import xpd_configuration
 from xpdacq.beamtimeSetup import load_beamtime
-from xpdacq.simulation import xpd_pe1c
+from xpdacq.simulation import xpd_pe1c, shctl1
 
 with path("data", "__init__.py") as p:
     DATA = p.parent
@@ -29,6 +29,7 @@ xpd_configuration.update(
     {
         "area_det": xpd_pe1c,
         "x_controller": HW.motor1,
-        "y_controller": HW.motor2
+        "y_controller": HW.motor2,
+        "shutter": shctl1
     }
 )

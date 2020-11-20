@@ -1,7 +1,8 @@
 """A temperature ramping with waiting."""
 import bluesky.plan_stubs as bps
 import bluesky.plans as bp
-from xpdacq.beamtime import open_shutter_stub, close_shutter_stub, _nstep
+from xpdacq.beamtime import _nstep, _configure_area_det
+from xpdacq.beamtime import open_shutter_stub, close_shutter_stub
 from xpdacq.glbl import glbl
 from xpdacq.xpdacq_conf import xpd_configuration
 
